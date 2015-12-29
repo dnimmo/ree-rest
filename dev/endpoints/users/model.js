@@ -19,7 +19,6 @@ Users.ensureIndex("slug");
 
 Users.pre('save', function(next) {
   this.slug = slugify(this.username);
-  console.log(this);
   try{
     this.validate({enforce_extra: 'strict'});
   }catch(err){

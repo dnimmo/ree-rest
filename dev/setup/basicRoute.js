@@ -1,4 +1,6 @@
 import {slugify} from '../utils'
+import eJwt from 'express-jwt';
+import keys from '../../secrets.json'
 
 let basicRoute = {
   route: null,
@@ -6,7 +8,7 @@ let basicRoute = {
   db: null,
   get(req,res,next){
     this.db.run((err, results) =>{
-      res.json(results);
+      res.json(results); 
     });
   },
   addContent(req,res,next,content){
@@ -52,8 +54,8 @@ let basicRoute = {
   init(){
     this.api.get(`/${this.route}`, this.get.bind(this));
     this.api.get(`/${this.route}/:slug`, this.getItem.bind(this));
-    this.api.post(`/${this.route}`, this.post.bind(this));
-    this.api.put(`/${this.route}/:slug`, this.put.bind(this));
+    this.api.post(`/${this.route}`,eJwt({secret: keys.jwtkey}), this.post.bind(this));
+    this.api.put(`/${this.route}/:slug`,eJwt({secret: keys.jwtkey}), this.put.bind(this));
   }
 }
 
