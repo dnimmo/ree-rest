@@ -23,7 +23,7 @@ auth.authenticate = function(req,res,next) {
         let payload = {
           email: results[0].email
         }
-        return res.json(jwt.sign(payload, keys.jwtkey));
+        return res.json(jwt.sign(payload, keys.jwtkey, {expiresIn: '1d'}));
       })
       .catch(bcrypt.MISMATCH_ERROR, (error) => {
         return res.json(error);
