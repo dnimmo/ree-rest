@@ -1,5 +1,5 @@
 import {slugify} from '../../utils';
-import {thinky} from '../../setup/config.js'
+import {thinky} from '../../setup/config.js';
 
 let type = thinky.type;
 
@@ -7,18 +7,19 @@ let type = thinky.type;
 export let Schema = {
   id: type.string(),
   title: type.string().min(2),
+  file: type.string().min(2),
   slug: type.string().min(2),
-  content: type.string().min(2),
-  featured_image: type.string().min(2),
+  type: type.string().min(2),
+  alt: type.string().min(2),
   created_at: Date,
   modified_at: Date
 }
 
-export let Posts = thinky.createModel("Post", Schema);
+export let Media = thinky.createModel("Media", Schema);
 
-Posts.ensureIndex("slug");
+Media.ensureIndex("slug");
 
-Posts.pre('save', function(next) {
+Media.pre('save', function(next) {
   this.slug = slugify(this.title);
   console.log(this);
   try{

@@ -8,10 +8,11 @@ let basicRoute = {
   db: null,
   get(req,res,next){
     this.db.run((err, results) =>{
-      res.json(results); 
+      res.json(results);
     });
   },
   addContent(req,res,next,content){
+
     if(req.method !== "POST"){
       var data = Object.assign(content, req.body);
     }else{
@@ -19,7 +20,7 @@ let basicRoute = {
     }
 
     data.saveAll().then((result) => {
-      console.log("hello");
+
       return res.send({"message": `document added to ${this.db.getTableName()}`});
     }).error((error) => {
       var error = error.toString();
@@ -51,11 +52,16 @@ let basicRoute = {
       return res.json(results[0]);
     });
   },
+  delete(req,res,next){
+    var data = new this.db(req.body);
+    this.db.filter({slug: req.params.slug}).delete().then((results) => res.json({'message': 'item deleted'}))
+  },
   init(){
     this.api.get(`/${this.route}`, this.get.bind(this));
     this.api.get(`/${this.route}/:slug`, this.getItem.bind(this));
     this.api.post(`/${this.route}`,eJwt({secret: keys.jwtkey}), this.post.bind(this));
     this.api.put(`/${this.route}/:slug`,eJwt({secret: keys.jwtkey}), this.put.bind(this));
+    this.api.delete(`/${this.route}/:slug`,eJwt({secret: keys.jwtkey}), this.delete.bind(this));
   }
 }
 
