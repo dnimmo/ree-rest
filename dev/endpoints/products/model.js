@@ -4,7 +4,7 @@ import {thinky} from '../../setup/config.js';
 let type = thinky.type;
 
 
-export let Schema = {
+export let Schema = { 
   id: type.string(),
   title: type.string().min(2),
   slug: type.string().min(2),
