@@ -44,7 +44,7 @@ users.post = function(req,res,next) {
 users.init = function(req,res,next){
   this.api.get(`/${this.route}`,eJwt({secret: keys.jwtkey}), this.get.bind(this));
   this.api.get(`/${this.route}/:slug`,eJwt({secret: keys.jwtkey}), this.getItem.bind(this));
-  this.api.post(`/${this.route}`,eJwt({secret: keys.jwtkey}), this.post.bind(this));
+  this.api.post(`/${this.route}`, this.post.bind(this));
   this.api.put(`/${this.route}/:slug`,eJwt({secret: keys.jwtkey}), this.put.bind(this));
 }
 

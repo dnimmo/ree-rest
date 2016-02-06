@@ -6,3 +6,12 @@ export var slugify = (text) => {
     .replace(/^-+/, '')             // Trim - from start of text
     .replace(/-+$/, '');
 }
+
+
+export const configure = function(args){
+  const state = {
+    api: args.api,
+    db: args.db
+  }
+  return state
+}

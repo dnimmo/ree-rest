@@ -8,7 +8,7 @@ let basicRoute = {
   db: null,
   get(req,res,next){
     this.db.run((err, results) =>{
-      res.json(results); 
+      res.json(results);
     });
   },
   addContent(req,res,next,content){

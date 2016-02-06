@@ -4,3 +4,4 @@ rethinkdb_data
 rethinkdb_data/*
 .DS_Store
 secrets.json
+rethinkdb

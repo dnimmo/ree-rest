@@ -1,8 +1,7 @@
 import {slugify} from '../../utils';
-import {thinky} from '../../setup/config.js'
+import {config} from '../../setup/config'
 
-console.log(thinky);
-
+let thinky = config.db
 let type = thinky.type;
 
 
