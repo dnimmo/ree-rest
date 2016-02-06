@@ -1,13 +1,13 @@
 import express from 'express'
-import {config} from './setup/config'
-import {Posts} from './endpoints/posts/model'
+import {config, registerRoute} from './setup/config'
+import posts from './endpoints/posts'
 import bodyParser from 'body-parser'
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false })).use(bodyParser.json());
 
-
+console.log(registerRoute)
 
 registerRoute(config, {
   posts
