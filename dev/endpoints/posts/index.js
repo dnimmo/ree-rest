@@ -4,7 +4,10 @@ import {config, createRoute} from '../../setup/config.js';
 
 const posts = createRoute({
   route:'posts',
-  model: Posts
+  model: Posts,
+  secure: {
+    get: true
+  }
 })
 
 export default posts;
