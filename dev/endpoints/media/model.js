@@ -1,7 +1,7 @@
 import {slugify} from '../../utils';
-import {thinky} from '../../setup/config.js';
+import {config} from '../../setup/config.js';
 
-let type = thinky.type;
+let type = config.db.type;
 
 
 export let Schema = {
@@ -15,7 +15,7 @@ export let Schema = {
   modified_at: Date
 }
 
-export let Media = thinky.createModel("Media", Schema);
+export let Media = config.db.createModel("Media", Schema);
 
 Media.ensureIndex("slug");
 

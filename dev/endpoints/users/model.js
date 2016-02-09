@@ -1,7 +1,7 @@
 import {slugify} from '../../utils'
-import {thinky} from '../../setup/config.js'
+import {config} from '../../setup/config.js'
 
-let type = thinky.type;
+let type = config.db.type;
 
 export let Schema = {
   id: type.string(),
@@ -13,7 +13,7 @@ export let Schema = {
   modified_at: Date
 }
 
-export let Users = thinky.createModel("Users", Schema);
+export let Users = config.db.createModel("Users", Schema);
 
 Users.ensureIndex("slug");
 

@@ -1,52 +1,43 @@
 import basicRoute from '../../setup/basicRoute.js';
 import {Schema, Users} from './model.js';
-import {config} from '../../setup/config.js';
 import {slugify} from '../../utils';
 import eJwt from 'express-jwt';
 import bcrypt from 'bcrypt-as-promised';
 import keys from '../../../secrets.json'
 
-var users = Object.create(basicRoute);
-users = Object.assign(users, {route: 'users', db: Users}, config);
+import {config, createRoute, addContent, getData} from '../../setup/config.js';
 
+const users = createRoute({
+  route:'users',
+  model: Users,
+  secure: {
+    get: true,
+    post: true,
+    put: true,
+    delete: true
+  }
+})
 
+users.post = (req,res,next) => {
+  let body = req.body
+  let slug = slugify(body.username)
 
-
-users.addContentWithPass = function(req,res,next,content){
-  var data = new this.db(content);
-  var that = this;
-
-  bcrypt.hash(data.password, 10)
-  .then((hash) => data.password = hash)
-  .then(() => {
-    this.addContent(req,res,next,data);
-  });
-
-}
-
-
-users.post = function(req,res,next) {
-  let body = req.body;
-  let slug = slugify(body.username);
-
-  this.db.filter((item) => {
-     return item("slug").eq(slug).or(item('email').eq(body.email));
-   }).then((results) =>{
+  getData({model: Users}).single({email: body.email}).then((results) =>{
+    
     if(results.length === 0){
-      this.addContentWithPass(req,res,next,req.body);
+      bcrypt.hash(body.password, 10)
+      .then((hash) => body = hash)
+      .then((hash) => {
+        addContent({
+          content: data,
+          model: Users
+        },req,res,next)
+      });
+
     }else{
       res.json({'message': 'This item already exists'});
     }
   });
-}
-
-
-users.init = function(req,res,next){
-  this.api.get(`/${this.route}`,eJwt({secret: keys.jwtkey}), this.get.bind(this));
-  this.api.get(`/${this.route}/:slug`,eJwt({secret: keys.jwtkey}), this.getItem.bind(this));
-  this.api.post(`/${this.route}`, this.post.bind(this));
-  this.api.put(`/${this.route}/:slug`,eJwt({secret: keys.jwtkey}), this.put.bind(this));
-  this.api.delete(`/${this.route}/:slug`,eJwt({secret: keys.jwtkey}), this.delete.bind(this));
 }
 
 export default users;

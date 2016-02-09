@@ -1,16 +1,21 @@
 import express from 'express'
-import {config, registerRoute} from './setup/config'
+import {config, resourceRoutes} from './setup/config'
 import posts from './endpoints/posts'
+import login from './endpoints/auth'
+import media from './endpoints/media'
+import users from './endpoints/users'
 import bodyParser from 'body-parser'
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false })).use(bodyParser.json());
 
-console.log(registerRoute)
 
-registerRoute(config, {
-  posts
+resourceRoutes(config, {
+  posts,
+  users,
+  media,
+  login
 })
 
 config.api.use(function (err, req, res, next) {
