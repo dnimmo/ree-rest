@@ -1,9 +1,7 @@
 import express from 'express'
-import {config, resourceRoutes} from './setup/config'
+import {config} from './setup/config'
+import {registerRoutes} from './setup/routing'
 import posts from './endpoints/posts'
-import login from './endpoints/auth'
-import media from './endpoints/media'
-import users from './endpoints/users'
 import bodyParser from 'body-parser'
 
 const app = express();
@@ -11,12 +9,12 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false })).use(bodyParser.json());
 
 
-resourceRoutes(config, {
-  posts,
-  users,
-  media,
-  login
-})
+console.log(posts)
+
+registerRoutes(config.api, [
+  posts
+])
+
 
 config.api.use(function (err, req, res, next) {
   if (err.name === 'UnauthorizedError') {

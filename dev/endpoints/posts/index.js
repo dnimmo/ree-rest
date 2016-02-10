@@ -1,9 +1,10 @@
 import {Schema, Posts} from './model.js';
-import {config, createRoute} from '../../setup/config.js';
+import {createRoute} from '../../setup/routing';
+import {config} from '../../setup/config';
 
 const posts = createRoute({
   route:'posts',
-  model: Posts,
+  model: Posts
 })
 
 export default posts;
