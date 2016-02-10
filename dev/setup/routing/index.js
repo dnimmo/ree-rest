@@ -15,11 +15,21 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 
+
+
+/*
+  Assigns methods to the Express router
+  router[i.methods[m].method](`/${i.route}${i.methods[m].params || ''}`,  i.methods[m].action)
+  is the same as writing
+  router.get(`/someRoute/:slug`, someFunction)
+
+  but it is adapted to what is created by the resource function
+*/
 export const registerRoutes = function(router, routes) {
   routes.map((i) => {
     let methods = Object.keys(i.methods)
     methods.map((m) => {
-      //appends route action to the api router 
+      //appends route action to the api router
       router[i.methods[m].method](
         `/${i.route}${i.methods[m].params || ''}`,
         i.methods[m].action
@@ -28,6 +38,11 @@ export const registerRoutes = function(router, routes) {
   })
 }
 
+
+/*
+  This returns RESTful endpoints for routecreated with createRoute function
+  will only return specific method if allowedMethods has been passed
+*/
 const resource = (state) => {
   let resources = Object.assign(
     {},
@@ -70,6 +85,25 @@ const resource = (state) => {
   return methods
 }
 
+/*
+  Use this function to create a route
+  example:
+    createRoute({
+      route: 'posts',
+      model: Posts
+    })
+  this will create a route for 'posts' that has all the endpoints.
+
+  allowedMethods is an array of specific endpoints if you want specific routes
+  example:
+    createRoute({
+      route: 'posts',
+      model: Posts,
+      allowedMethods: ['get']
+    })
+
+  will only return a get method on this route
+*/
 export const createRoute = function(args){
   const state = {
     route: args.route,
